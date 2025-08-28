@@ -16,6 +16,7 @@ for (let r = 0; r < rows; r++) {
     cell.addEventListener("click", () => handleCellClick(r, c));
     gridDiv.appendChild(cell);
     grid[r][c] = "empty";
+    sleep(30);
   }
 }
 
@@ -49,7 +50,7 @@ function handleCellClick(r, c) {
   }
 }
 
-async function runBFS() {
+function bfs() {
   if (!start || !end) {
     alert("Please set Start and End points first!");
     return;
@@ -58,6 +59,7 @@ async function runBFS() {
   let queue = [start];
   let visited = new Set();
   let parent = {};
+  let flag = false;
 
   visited.add(start.toString());
 
@@ -66,10 +68,11 @@ async function runBFS() {
 
     if (!(r === start[0] && c === start[1]) && !(r === end[0] && c === end[1])) {
       document.getElementById(`cell-${r}-${c}`).classList.add("visited");
-      await sleep(30);
+    //   await sleep(30);
     }
 
     if (r === end[0] && c === end[1]) {
+        flag = true;
       break;
     }
 
@@ -84,6 +87,11 @@ async function runBFS() {
       }
     }
   }
+  if(!flag){
+    alert("No possilbe path found");
+    return;
+  }
+  
 
   let cur = end;
   while (parent[cur]) {
@@ -91,7 +99,7 @@ async function runBFS() {
     if (!(r === start[0] && c === start[1]) && !(r === end[0] && c === end[1])) {
       document.getElementById(`cell-${r}-${c}`).classList.remove("visited");
       document.getElementById(`cell-${r}-${c}`).classList.add("path");
-      await sleep(50);
+    //   await sleep(50);
     }
     cur = parent[cur];
   }
